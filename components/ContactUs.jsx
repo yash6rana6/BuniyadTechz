@@ -63,7 +63,7 @@ export default function ContactUs() {
           </div>
           <div className="flex items-center gap-3">
             <FaPhone className="text-yellow-400" />
-            <span>+91 7906636807</span>
+            <span>+91 9193198370</span>
           </div>
           <div className="flex items-center gap-3">
             <FaMapMarkerAlt className="text-yellow-400" />

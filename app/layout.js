@@ -1,37 +1,26 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
   subsets: ["latin"],
-});
-
-
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
 });
 
 export const metadata = {
-  title: "School Management System | Buniyad Techz",
+  title: "Software development company | Buniyad Techz",
   description:
-    "Experience Buniyad Techz's modern School Management System — designed to automate attendance, exams, reports, and fee management with a user-friendly dashboard.",
+    "Buniyad Techz provides modern website and software development services solutions for startups and businesses.",
   keywords: [
-    "school management system",
-    "school ERP software",
-    "education software",
-    "student attendance",
-    "exam management",
-    "Buniyad Techz",
+    "Software development company","Web development company","App development company","Website development agency"
   ],
   authors: [{ name: "Buniyad Techz" }],
   openGraph: {
-    title: "School Management System | Buniyad Techz",
+    title: "Buniyad Techz",
     description:
-      "Automate attendance, exams, and reports with Buniyad Techz School Management System — a complete ERP solution for modern schools.",
-    url: "https://your-domain.vercel.app/school-management-system",
+      "We build a scalable, modern and fast web application to grow your startup bussiness online",
+    url: "htt",
     siteName: "Buniyad Techz",
     images: [
       {
@@ -46,23 +35,20 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "School Management System | Buniyad Techz",
+    title: "Buniyad Techz",
     description:
-      "Smart ERP system by Buniyad Techz for automating school operations and reports.",
+      "We build a scalable, modern and fast web application to grow your startup bussiness online",
     images: ["https://buniyadtechz.vercel.app/blogs/erp-system"],
   },
   metadataBase: new URL("https://buniyadtechz.vercel.app/"),
 };
 
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${roboto.variable} antialiased`}>
         <div className="sticky top-0 z-50 bg-slate-950">
-          <Navbar/>
+          <Navbar />
         </div>
         {children}
       </body>

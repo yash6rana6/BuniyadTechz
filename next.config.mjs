@@ -1,14 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  turbopack: {},
+  // ✅ Enable standalone output for Vercel to detect server files
+  output: "standalone",
 
+  // Optional but good practice
+  reactStrictMode: true,
+
+  // Keep your existing settings
+  turbopack: {},
   typescript: {
     ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: false,
   },
-
   images: {
     remotePatterns: [
       {

@@ -34,7 +34,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold text-[#FFD700] mb-4">Contact Us</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             <li>Email: <a href="mailto:buniyadtechz@gmail.com" className="text-[#FFD700]">buniyadtechz@gmail.com</a></li>
-            <li>Phone: <span className="text-[#FFD700]">+91-8954140915</span></li>
+            <li>Phone: <span className="text-[#FFD700]">+91-9193198370</span></li>
             <li>Location: India</li>
           </ul>
         </div>

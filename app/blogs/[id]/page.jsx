@@ -8,74 +8,80 @@ export default function BlogDetail({ params }) {
   if (!blog) return notFound();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">
-      {/* Background Floating Icons */}
-      <div className="absolute inset-0 pointer-events-none">{/* ...icons... */}</div>
+    <main className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="max-w-5xl mx-auto px-6 pt-28 pb-24">
 
-      {/* Content Container */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
-        {/* Header Image */}
-        <div className="relative mt-20 w-full h-[420px] rounded-3xl overflow-hidden shadow-2xl mb-10 ring-1 ring-white/10">
+        {/* HERO IMAGE */}
+        <div className="relative w-full h-[420px] rounded-2xl overflow-hidden border border-white/10 mb-14">
           <Image
             src={blog.thumbnail}
             alt={blog.title}
             fill
+            priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-black/30" />
         </div>
 
-        {/* Title & Meta */}
-        <div className="mb-10 text-center">
-          <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-cyan-300 mb-6 leading-tight">
+        {/* TITLE & META */}
+        <header className="mb-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-semibold leading-tight mb-4">
             {blog.title}
           </h1>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-            <p className="text-cyan-200 text-sm font-medium">
-              Published on{" "}
-              <span className="text-white font-semibold">{blog.date}</span>
-            </p>
-          </div>
-        </div>
 
-        {/* Blog Content */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/10 shadow-2xl space-y-10">
+          <p className="text-sm text-neutral-400">
+            Published on <span className="text-neutral-300">{blog.date}</span>
+          </p>
+
+          {/* TAGS */}
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {blog.tags.map((tag, i) => (
+              <span
+                key={i}
+                className="text-xs px-3 py-1 rounded-full border border-white/10 bg-white/5 text-neutral-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        {/* CONTENT */}
+        <article className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 space-y-12 leading-relaxed">
           {blog.content.map((section, idx) => (
-            <div key={idx}>
-              <h2 className="text-3xl font-bold text-cyan-300 mb-4">
+            <section key={idx}>
+              <h2 className="text-2xl font-semibold mb-4 text-white">
                 {section.heading}
               </h2>
 
-              {/* Render text */}
               {section.type === "text" && (
-                <p className="text-gray-200 leading-relaxed">{section.text}</p>
+                <p className="text-neutral-300">
+                  {section.text}
+                </p>
               )}
 
-              {/* Render points */}
               {section.type === "points" && (
-                <ul className="list-disc pl-6 space-y-2 text-gray-200">
+                <ul className="list-disc pl-6 space-y-2 text-neutral-300">
                   {section.points.map((p, i) => (
                     <li key={i}>{p}</li>
                   ))}
                 </ul>
               )}
 
-              {/* Render plans */}
               {section.type === "plans" && (
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-6 mt-6">
                   {section.plans.map((plan, i) => (
                     <div
                       key={i}
-                      className="bg-slate-800 p-6 rounded-2xl shadow-lg border border-cyan-500/20"
+                      className="border border-white/10 rounded-xl p-6 bg-black/40"
                     >
-                      <h3 className="text-xl font-semibold text-white mb-2">
+                      <h3 className="text-lg font-medium mb-2">
                         {plan.name}
                       </h3>
-                      <p className="text-cyan-400 font-bold text-lg mb-3">
+                      <p className="text-indigo-400 font-semibold mb-4">
                         {plan.price}
                       </p>
-                      <ul className="list-disc pl-5 text-gray-300 space-y-1">
+                      <ul className="list-disc pl-5 text-sm text-neutral-300 space-y-1">
                         {plan.features.map((f, j) => (
                           <li key={j}>{f}</li>
                         ))}
@@ -84,26 +90,32 @@ export default function BlogDetail({ params }) {
                   ))}
                 </div>
               )}
-            </div>
+            </section>
           ))}
-        </div>
+        </article>
 
         {/* CTA */}
-        <div className="mt-16 text-center">{/* ...CTA code... */}</div>
-
-        {/* Footer */}
-        <div className="mt-16 border-t border-white/10 pt-8 text-center">
-          <div className="flex items-center justify-center gap-2 text-gray-400 text-sm">
-            <div className="w-6 h-6 bg-gradient-to-r from-cyan-500 to-blue-500 rounded flex items-center justify-center text-xs font-bold text-white">
-              BT
-            </div>
-            <span>
-              © {new Date().getFullYear()} Buniyad Techz — Crafted with 💡 &
-              Passion
-            </span>
-          </div>
+        <div className="mt-20 text-center">
+          <h3 className="text-2xl font-semibold mb-4">
+            Need a similar solution?
+          </h3>
+          <p className="text-neutral-400 mb-8 max-w-xl mx-auto">
+            We help schools, startups, and businesses build reliable,
+            scalable, and professional digital products.
+          </p>
+          <a
+            href="/contact"
+            className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 transition font-medium"
+          >
+            Contact Buniyad Techz
+          </a>
         </div>
+
+        {/* FOOTER */}
+        <footer className="mt-24 pt-8 border-t border-white/10 text-center text-sm text-neutral-500">
+          © {new Date().getFullYear()} Buniyad Techz. All rights reserved.
+        </footer>
       </div>
-    </div>
+    </main>
   );
 }

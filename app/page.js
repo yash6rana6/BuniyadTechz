@@ -5,6 +5,7 @@ import FAQSection from "@/components/FAQs";
 import Footer from "@/components/Footer";
 import Hero, { LampHero } from "@/components/Hero";
 import RecentProjects from "@/components/Project";
+import UpcomingProjects from '@/components/UpcomingProjects'
 import Services from "@/components/Service";
 import Testimonials from "@/components/Testimonial";
 import React from "react";
@@ -25,7 +26,7 @@ const page = () => {
       </section>
 
       <section id="projects">
-        <RecentProjects />
+        <UpcomingProjects/>
       </section>
 
       

@@ -1,46 +1,55 @@
-
 export const projects = [
   {
     id: 1,
-    title: "E-Commerce",
-    des: "A full-stack e-commerce platform with product browsing, cart, payments and admin dashboard.",
+    title: "E-Commerce Platform",
+    subtitle: "Full-Stack Online Shopping Solution",
+    description:
+      "A complete full-stack e-commerce platform designed to handle real-world online shopping needs. The project includes product listing, cart management, secure checkout flow, and an admin dashboard to manage products and orders.",
+    highlights: [
+      "Product listing & search",
+      "Cart & checkout workflow",
+      "Admin dashboard for management",
+      "Scalable backend architecture",
+    ],
+    tech: ["React", "Tailwind CSS", "Node.js", "MongoDB"],
     img: "/p1.jpg",
-    iconLists: ["/re.svg", "/tail.svg", "/js.svg", "/mdb.svg", "/npm.svg", "/nodejs.svg"],
     link: "https://github.com/yash6rana6/E-commerce.git",
   },
   {
     id: 2,
-    title: "FoodDelivery",
-    des: "A React-based food delivery app styled with Tailwind CSS. Displays restaurants and their food items.",
-    img: "/p3.jpg",
-    iconLists: ["/next.svg", "/tail.svg"],
-    link: "https://github.com/vishhalsingh99/FoodDelivery",
+    title: "Pariksha Pillar",
+    subtitle: "Smart Exam Preparation Platform",
+    description:
+      "Pariksha Pillar is a smart exam-preparation platform built for competitive exam aspirants. It allows students to practice previous year questions, attempt real exam-like mock tests with timers, and analyze performance through detailed insights.",
+    highlights: [
+      "Real exam-like mock tests with timer",
+      "Previous Year Questions (PYQs)",
+      "Detailed performance analytics",
+      "Student & admin dashboards",
+    ],
+    tech: ["Next.js", "Tailwind CSS", "Node.js", "MongoDB"],
+    img: "/pariksha.jpeg",
+    link: "#",
   },
   {
     id: 3,
-    title: "StudyNotion",
-    des: "A full-featured EdTech platform inspired by StudyNotion with course creation, enrollment, dashboard, and video content",
-    img: "/p4.png",
-    iconLists: ["/re.svg", "/tail.svg", "/mdb.svg", "/nodejs.svg"],
-    link: "https://github.com/yash6rana6/Study_Notion.git",
+    title: "School Management System",
+    subtitle: "Complete Digital ERP for Schools",
+    description:
+      "A comprehensive School Management System designed to digitize and simplify school operations. It covers student management, attendance, examinations, fees, and communication between school and parents.",
+    highlights: [
+      "Student & teacher management",
+      "Attendance & examination modules",
+      "Fees & reporting system",
+      "Role-based dashboards",
+    ],
+    tech: ["MERN Stack", "Tailwind CSS", "JWT Auth"],
+    img: "/erp-thumb.png",
+    link: "#",
   },
-  {
-    id: 4,
-    title: "Real-time spotify",
-    des: "A real-time music streaming app inspired by Spotify, built with React, Node.js, WebSockets, and the Spotify API.",
-    img: "/p2.jpg",
-    iconLists: ["/next.svg", "/tail.svg", "/re.svg", "/ts.svg"],
-    link: "https://github.com/yash6rana6/Realtime_spotify_clone.git",
-  },
-  {
-    id: 5,
-    title: "Mentor Hub",
-    des: "MentorHub is an AI-driven platform that helps users practice mock interviews in real-time",
-    img: "/p5.png",
-    iconLists: ["/next.svg", "/tail.svg", "/re.svg"],
-    link: "https://mentor-hub-mu.vercel.app",
-  },
+
 ];
+
 
 export const testimonials = [
   {
