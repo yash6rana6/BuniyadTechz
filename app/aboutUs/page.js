@@ -85,10 +85,6 @@ export default function AboutPage() {
           </motion.div>
         </motion.section>
 
-       import { motion } from "framer-motion"; // assuming fadeUp is defined elsewhere
-
-// ... your fadeUp variants
-
 <motion.section
   initial="hidden"
   whileInView="show"
