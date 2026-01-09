@@ -85,78 +85,77 @@ export default function AboutPage() {
           </motion.div>
         </motion.section>
 
-       import { motion } from "framer-motion"; // assuming fadeUp is defined elsewhere
-
-// ... your fadeUp variants
-
-<motion.section
-  initial="hidden"
-  whileInView="show"
-  viewport={{ once: true }}
-  className="mb-32"
->
-  <motion.h2
-    variants={fadeUp}
-    className="text-3xl font-bold text-center mb-10"
-  >
-    Our <span className="text-indigo-400">Goals</span>
-  </motion.h2>
-  <motion.p
-    variants={fadeUp}
-    className="text-neutral-400 text-center max-w-3xl mx-auto mb-20 leading-relaxed"
-  >
-    These goals guide every decision we make — from how we design interfaces
-    to how we write code and support our clients long after launch.
-  </motion.p>
-
-  <div className="max-w-5xl mx-auto">
-    <div className="relative pl-12 md:pl-0"> {/* Container for absolute line */}
-      {/* Single vertical line - hidden on mobile */}
-      <div className="absolute left-5 top-5 bottom-5 w-px bg-indigo-500/30 hidden md:block" />
-
-      {[
-        {
-          step: "01",
-          title: "Build Products That Matter",
-          desc: "Create digital products that solve real problems, feel dependable in daily use, and continue delivering value as they scale.",
-        },
-        {
-          step: "02",
-          title: "Support Founders & Growing Teams",
-          desc: "Work closely with startups and businesses to turn ideas into production-ready platforms without unnecessary complexity.",
-        },
-        {
-          step: "03",
-          title: "Think Long-Term, Always",
-          desc: "Design systems that remain maintainable, secure, and adaptable as technology and business needs evolve.",
-        },
-      ].map((goal, i) => (
-        <motion.div
-          key={i}
-          variants={fadeUp}
-          className="relative flex gap-8 mb-16 last:mb-0 items-start"
+        <motion.section
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mb-32"
         >
-          {/* Step circle + connector line (only between items) */}
-          <div className="flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full bg-indigo-500/20 border border-indigo-500 flex items-center justify-center text-indigo-400 font-bold text-lg z-10 bg-backdrop-blur-sm">
-              {goal.step}
-            </div>
-            {/* Connector line to next item - hide on last */}
-            {i < 2 && (
-              <div className="w-px bg-indigo-500/30 mt-4 flex-1 hidden md:block" />
-            )}
-          </div>
+          <motion.h2
+            variants={fadeUp}
+            className="text-3xl font-bold text-center mb-10"
+          >
+            Our <span className="text-indigo-400">Goals</span>
+          </motion.h2>
+          <motion.p
+            variants={fadeUp}
+            className="text-neutral-400 text-center max-w-3xl mx-auto mb-20 leading-relaxed"
+          >
+            These goals guide every decision we make — from how we design
+            interfaces to how we write code and support our clients long after
+            launch.
+          </motion.p>
 
-          {/* Card */}
-          <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-indigo-400/40 transition-all duration-300 shadow-lg hover:shadow-indigo-500/10">
-            <h3 className="text-2xl font-semibold mb-4">{goal.title}</h3>
-            <p className="text-neutral-400 leading-relaxed">{goal.desc}</p>
+          <div className="max-w-5xl mx-auto">
+            <div className="relative pl-12 md:pl-0">
+              <div className="absolute left-5 top-5 bottom-5 w-px bg-indigo-500/30 hidden md:block" />
+              {[
+                {
+                  step: "01",
+                  title: "Build Products That Matter",
+                  desc: "Create digital products that solve real problems, feel dependable in daily use, and continue delivering value as they scale.",
+                },
+                {
+                  step: "02",
+                  title: "Support Founders & Growing Teams",
+                  desc: "Work closely with startups and businesses to turn ideas into production-ready platforms without unnecessary complexity.",
+                },
+                {
+                  step: "03",
+                  title: "Think Long-Term, Always",
+                  desc: "Design systems that remain maintainable, secure, and adaptable as technology and business needs evolve.",
+                },
+              ].map((goal, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="relative flex gap-8 mb-16 last:mb-0 items-start"
+                >
+                  {/* Step circle + connector line (only between items) */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full bg-indigo-500/20 border border-indigo-500 flex items-center justify-center text-indigo-400 font-bold text-lg z-10 bg-backdrop-blur-sm">
+                      {goal.step}
+                    </div>
+                    {/* Connector line to next item - hide on last */}
+                    {i < 2 && (
+                      <div className="w-px bg-indigo-500/30 mt-4 flex-1 hidden md:block" />
+                    )}
+                  </div>
+
+                  {/* Card */}
+                  <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-indigo-400/40 transition-all duration-300 shadow-lg hover:shadow-indigo-500/10">
+                    <h3 className="text-2xl font-semibold mb-4">
+                      {goal.title}
+                    </h3>
+                    <p className="text-neutral-400 leading-relaxed">
+                      {goal.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</motion.section>
+        </motion.section>
 
         {/* VALUES */}
         <motion.section

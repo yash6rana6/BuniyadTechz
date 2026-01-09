@@ -1,6 +1,7 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({ children }) {
           <Navbar />
         </div>
         {children}
+        <GoogleAnalytics gaId="G-N715B7KD06" />
       </body>
     </html>
   );
