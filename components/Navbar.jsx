@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("/");
   const [mounted, setMounted] = useState(false);
 
   const pathname = usePathname();
@@ -18,26 +17,12 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") setMenuOpen(false);
-    };
-
-    const handleClickOutside = (e) => {
-      if (menuOpen && !e.target.closest("nav")) {
-        setMenuOpen(false);
-      }
-    };
-
-    if (menuOpen && mounted) {
+    const handleEscape = (e) => e.key === "Escape" && setMenuOpen(false);
+    if (menuOpen) {
       document.addEventListener("keydown", handleEscape);
-      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("keydown", handleEscape);
     }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [menuOpen, mounted]);
+  }, [menuOpen]);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -49,20 +34,14 @@ const Navbar = () => {
   ];
 
   const handleNavClick = (href) => {
-    setActiveSection(href);
     setMenuOpen(false);
+    router.push(href);
+  };
 
-    if (href.startsWith("/#")) {
-      const id = href.split("#")[1];
-      if (pathname === "/") {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push(href);
-      }
-    } else {
-      router.push(href);
-    }
+  // ⭐ BEST LOGIC → handles nested like /blogs/[id]
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
   };
 
   if (!mounted) return null;
@@ -70,17 +49,13 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100]
-        bg-neutral-900/60 backdrop-blur-md text-white
-        px-4 md:px-10 py-3 rounded-full shadow-lg border border-white/10
-        w-[95%] md:w-[90%] max-w-6xl"
+        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] bg-neutral-900/60 backdrop-blur-md text-white
+        px-4 md:px-10 py-3 rounded-full shadow-lg border border-white/10 w-[95%] md:w-[90%] max-w-6xl"
       >
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 group cursor-pointer select-none"
-          >
+          
+          {/* LOGO */}
+          <Link href="/" className="flex items-center gap-3 group select-none">
             <Image
               src="/Logo.png"
               width={32}
@@ -94,21 +69,18 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Menu */}
+          {/* DESKTOP MENU */}
           <ul className="hidden md:flex gap-6 text-sm font-medium">
             {navItems.map((item) => (
               <li key={item.href}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative cursor-pointer select-none transition-colors hover:text-yellow-400
-                    ${
-                      activeSection === item.href
-                        ? "text-yellow-400"
-                        : ""
-                    }`}
+                  className={`relative transition hover:text-yellow-400 ${
+                    isActive(item.href) ? "text-yellow-400" : "text-white"
+                  }`}
                 >
                   {item.label}
-                  {activeSection === item.href && (
+                  {isActive(item.href) && (
                     <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-yellow-400 rounded-full" />
                   )}
                 </button>
@@ -116,7 +88,7 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Mobile Button */}
+          {/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden p-2 rounded-full cursor-pointer hover:bg-white/10 text-yellow-400"
@@ -125,40 +97,36 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden absolute top-full left-0 right-0 mt-2 mx-2
-          bg-neutral-900/95 rounded-2xl border border-white/10 shadow-xl
-          transition-all duration-300
-          ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
-        >
-          <ul className="p-4 space-y-2">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <button
-                  onClick={() => handleNavClick(item.href)}
-                  className={`w-full text-left py-3 px-4 rounded-xl
-                    cursor-pointer select-none transition
-                    hover:bg-white/10 hover:text-yellow-400
-                    ${
-                      activeSection === item.href
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div
+            className="md:hidden absolute top-full left-0 right-0 mt-2 mx-2 bg-neutral-900/95 rounded-2xl border border-white/10 shadow-xl"
+          >
+            <ul className="p-4 space-y-2">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <button
+                    onClick={() => handleNavClick(item.href)}
+                    className={`w-full text-left py-3 px-4 rounded-xl transition hover:bg-white/10 hover:text-yellow-400 ${
+                      isActive(item.href)
                         ? "bg-white/5 text-yellow-400"
-                        : ""
+                        : "text-white"
                     }`}
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </nav>
 
-      {/* Overlay */}
+      {/* OVERLAY */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90] md:hidden cursor-pointer"
           onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90] md:hidden cursor-pointer"
         />
       )}
     </>

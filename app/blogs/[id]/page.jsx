@@ -1,9 +1,11 @@
 import blogs from "@/lib/blog";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import React from "react";
 
-export default function BlogDetail({ params }) {
-  const blog = blogs.find((b) => b.id === params?.id);
+export default async function BlogDetail({ params }) {
+  const { id } = await params; // 👈 Next.js 15 fix
+  const blog = blogs.find((b) => b.id === id);
 
   if (!blog) return notFound();
 
@@ -19,6 +21,7 @@ export default function BlogDetail({ params }) {
             fill
             priority
             className="object-cover"
+            sizes="100vw" // 👈 Next.js performance fix
           />
           <div className="absolute inset-0 bg-black/30" />
         </div>
@@ -30,7 +33,8 @@ export default function BlogDetail({ params }) {
           </h1>
 
           <p className="text-sm text-neutral-400">
-            Published on <span className="text-neutral-300">{blog.date}</span>
+            Published on{" "}
+            <span className="text-neutral-300">{blog.date}</span>
           </p>
 
           {/* TAGS */}
