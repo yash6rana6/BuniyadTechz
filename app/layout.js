@@ -41,6 +41,9 @@ export const metadata = {
       "We build a scalable, modern and fast web application to grow your startup bussiness online",
     images: ["https://buniyadtechz.vercel.app/blogs/erp-system"],
   },
+    other: {
+    "yandex-verification": "6423b572f1ee67d2",
+  },
   metadataBase: new URL("https://buniyadtechz.vercel.app/"),
 };
 
