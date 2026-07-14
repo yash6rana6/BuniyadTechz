@@ -1,44 +1,72 @@
 // /app/api/internship/route.js
 
-import nodemailer from "nodemailer";
+import { sendMail } from "@/lib/mailer";
+
+const MAX_RESUME_BYTES = 5 * 1024 * 1024; 
 
 export async function POST(request) {
   try {
-    const { name, email, phone, track, message } = await request.json();
+    const formData = await request.formData();
 
-    if (!name || !email || !phone) {
-      return new Response(
-        JSON.stringify({ error: "Please fill all the required fields." }),
+    const name = formData.get("name")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
+    const phone = formData.get("phone")?.toString().trim();
+    const track = formData.get("track")?.toString().trim();
+    const message = formData.get("message")?.toString().trim();
+    const resume = formData.get("resume"); // File | null
+
+    if (!name || !email || !phone || !message) {
+      return Response.json(
+        { error: "Please fill all the required fields." },
         { status: 400 }
       );
     }
 
-    // Setup transporter (Gmail example) — reuses the same env vars as /api/contact
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,       // apna gmail id environment variable me rakho
-        pass: process.env.GMAIL_PASS,       // app password environment variable me
-      },
+    if (!resume || typeof resume === "string") {
+      return Response.json(
+        { error: "Resume (PDF) is required." },
+        { status: 400 }
+      );
+    }
+
+    if (resume.size > MAX_RESUME_BYTES) {
+      return Response.json(
+        { error: "Resume file is too large. Max 5MB allowed." },
+        { status: 400 }
+      );
+    }
+
+    if (resume.type !== "application/pdf") {
+      return Response.json(
+        { error: "Resume must be a PDF file." },
+        { status: 400 }
+      );
+    }
+
+    // Convert the uploaded File -> Buffer for the email attachment
+    const resumeBuffer = Buffer.from(await resume.arrayBuffer());
+
+    await sendMail({
+      from: email,
+      subject: `New internship application from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nTrack: ${track || "-"}\n\nMessage:\n${message}`,
+      attachments: [
+        {
+          filename: resume.name || "resume.pdf",
+          content: resumeBuffer,
+          contentType: "application/pdf",
+        },
+      ],
     });
 
-    const mailOptions = {
-      from: email,
-      to: process.env.GMAIL_USER,
-      subject: `New internship application from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nTrack: ${track}\n\nMessage:\n${message || "-"}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return new Response(
-      JSON.stringify({ message: "Application submitted successfully" }),
+    return Response.json(
+      { message: "Application submitted successfully" },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
-    return new Response(
-      JSON.stringify({ error: "Failed to submit application" }),
+    return Response.json(
+      { error: "Failed to submit application" },
       { status: 500 }
     );
   }
