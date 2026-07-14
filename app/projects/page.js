@@ -1,28 +1,7 @@
 import RecentProjects from "@/components/Project";
 import Footer from "@/components/Footer";
 
-const faqs = [
-  {
-    q: "What type of projects does Buniyad Techz work on?",
-    a: "Buniyad Techz works on custom web development projects including startup MVPs, full-stack web applications, admin dashboards, and scalable SaaS platforms using modern technologies."
-  },
-  {
-    q: "Are these real client projects?",
-    a: "Yes. All projects showcased here are real-world applications built for startups, businesses, or internal product ideas with a focus on performance and scalability."
-  },
-  {
-    q: "Which technologies are used in these projects?",
-    a: "Most projects are built using React, Next.js, Node.js, Express, MongoDB, and Tailwind CSS to ensure fast load times and SEO-friendly architecture."
-  },
-  {
-    q: "Can Buniyad Techz build a similar project for my business?",
-    a: "Absolutely. We specialize in custom web application development and can build similar or more advanced solutions tailored to your business needs."
-  },
-  {
-    q: "Do you provide ongoing support after project delivery?",
-    a: "Yes, we offer long-term maintenance, feature upgrades, and technical support after deployment."
-  },
-];
+import { faqs } from "@/data";
 
 export default function ProjectsPage() {
   return (

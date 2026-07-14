@@ -31,6 +31,7 @@ const Navbar = () => {
     { href: "/blogs", label: "Blog" },
     { href: "/aboutUs", label: "About" },
     { href: "/contact", label: "Contact" },
+    {href: "/internship", label: "Internships"}
   ];
 
   const handleNavClick = (href) => {
@@ -38,7 +39,7 @@ const Navbar = () => {
     router.push(href);
   };
 
-  // ⭐ BEST LOGIC → handles nested like /blogs/[id]
+  
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
@@ -49,10 +50,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] bg-neutral-900/60 backdrop-blur-md text-white
+        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100] bg-neutral-900/60 backdrop-blur-md text-white 
         px-4 md:px-10 py-3 rounded-full shadow-lg border border-white/10 w-[95%] md:w-[90%] max-w-6xl"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
           
           {/* LOGO */}
           <Link href="/" className="flex items-center gap-3 group select-none">
@@ -70,12 +71,12 @@ const Navbar = () => {
           </Link>
 
           {/* DESKTOP MENU */}
-          <ul className="hidden md:flex gap-6 text-sm font-medium">
+          <ul className="hidden md:flex gap-6 text-sm font-medium cu ">
             {navItems.map((item) => (
               <li key={item.href}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className={`relative transition hover:text-yellow-400 ${
+                  className={`relative transition hover:text-yellow-400 cursor-pointer ${
                     isActive(item.href) ? "text-yellow-400" : "text-white"
                   }`}
                 >
