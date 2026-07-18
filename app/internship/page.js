@@ -1,12 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
   useScroll,
   useTransform,
-  useInView,
   AnimatePresence,
 } from "framer-motion";
 import Footer from "@/components/Footer";
@@ -18,10 +17,20 @@ import {
   Users,
   Clock,
   Award,
+  BadgeCheck,
   CheckCircle2,
+  ShieldCheck,
   Loader2,
   ArrowDown,
   Sparkles,
+  IndianRupee,
+  CalendarDays,
+  Globe2,
+  Layers,
+  ChevronDown,
+  Github,
+  Linkedin,
+  X,
 } from "lucide-react";
 
 /* ---------------- shared variants ---------------- */
@@ -91,6 +100,11 @@ const perks = [
     title: "Certificate & LOR",
     desc: "Get a certificate and letter of recommendation on successful completion.",
   },
+  {
+    icon: BadgeCheck,
+    title: "Certificate Optional",
+    desc: "Internship participation is completely free. Students may optionally request a verified certificate after successful completion.",
+  },
 ];
 
 const process = [
@@ -100,18 +114,73 @@ const process = [
   { step: "04", title: "Build & Learn", desc: "Work on real tasks, ship features, and grow with regular feedback." },
 ];
 
-const gallery = [
-  "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1629904853716-f0bc54eea481?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1631624215749-b10b3dd7bca7?auto=format&fit=crop&w=900&q=80",
-  "https://images.unsplash.com/photo-1583508915901-b5f84c1dcde1?auto=format&fit=crop&w=900&q=80",
+const builds = [
+  {
+    label: "Startup Landing Pages",
+    img: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    label: "React Applications",
+    img: "https://images.unsplash.com/photo-1629904853716-f0bc54eea481?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    label: "Backend APIs",
+    img: "https://images.unsplash.com/photo-1631624215749-b10b3dd7bca7?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    label: "UI Components",
+    img: "https://images.unsplash.com/photo-1583508915901-b5f84c1dcde1?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    label: "Portfolio Projects",
+    img: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?auto=format&fit=crop&w=900&q=80",
+  },
 ];
 
-const stats = [
-  { label: "Interns Onboarded", value: 40, suffix: "+" },
-  { label: "Live Projects Shipped", value: 15, suffix: "+" },
-  { label: "Avg. Mentor Rating", value: 4.8, suffix: "/5" },
-  { label: "Tracks Available", value: 3, suffix: "" },
+const highlights = [
+  { icon: IndianRupee, title: "100% Free", desc: "No fees, ever" },
+  { icon: CalendarDays, title: "4 Weeks", desc: "Structured duration" },
+  { icon: Globe2, title: "Remote", desc: "Work from anywhere" },
+  { icon: Layers, title: "Project Based", desc: "Real deliverables" },
+];
+
+const trustPoints = [
+  "No Registration Fee",
+  "No Hidden Charges",
+  "Project Based Learning",
+  "Certificate Optional",
+  "Learn By Building",
+];
+
+const faqs = [
+  {
+    q: "Is the internship free?",
+    a: "Yes. The internship is completely free.",
+  },
+  {
+    q: "Is the certificate mandatory?",
+    a: "No. The certificate is completely optional.",
+  },
+  {
+    q: "Do I need prior experience?",
+    a: "No, the program is designed to be beginner-friendly.",
+  },
+  {
+    q: "Is this remote?",
+    a: "Yes, the entire internship is remote-friendly.",
+  },
+  {
+    q: "Will I get placement?",
+    a: "There is no placement guarantee. The focus is on hands-on project experience.",
+  },
+  {
+    q: "How long is the internship?",
+    a: "4 weeks.",
+  },
+  {
+    q: "Can beginners apply?",
+    a: "Yes, beginners are welcome to apply.",
+  },
 ];
 
 const techStack = [
@@ -127,37 +196,56 @@ const techStack = [
   "Ably",
 ];
 
+const experienceLevels = ["Beginner", "Intermediate", "Advanced"];
+const currentYears = ["1st Year", "2nd Year", "3rd Year", "4th Year", "Graduate"];
+
 const MAX_RESUME_MB = 5;
 
 /* ---------------- small components ---------------- */
 
-function AnimatedCounter({ value, suffix = "" }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1200;
-    const start = performance.now();
-    const isFloat = value % 1 !== 0;
-
-    const tick = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = value * eased;
-      setDisplay(isFloat ? Math.round(current * 10) / 10 : Math.round(current));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-
-    requestAnimationFrame(tick);
-  }, [inView, value]);
-
+function TrustBadge({ children }) {
   return (
-    <span ref={ref}>
-      {display}
-      {suffix}
+    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#E2E4E9]/90 bg-white/[0.06] border border-white/15 rounded-full px-3.5 py-1.5 backdrop-blur-sm">
+      <CheckCircle2 size={13} className="text-[#3CD070]" />
+      {children}
     </span>
+  );
+}
+
+function FaqItem({ item, isOpen, onToggle }) {
+  return (
+    <div className="border border-white/10 rounded-2xl bg-[#1C1D26] overflow-hidden">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 cursor-pointer"
+        aria-expanded={isOpen}
+      >
+        <span className="font-medium text-[#E2E4E9]">{item.q}</span>
+        <motion.span
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.25 }}
+          className="shrink-0 text-[#C94A6F]"
+        >
+          <ChevronDown size={18} />
+        </motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <p className="px-6 pb-5 text-[#868996] text-sm leading-relaxed">
+              {item.a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -179,6 +267,11 @@ export default function InternshipPage() {
     name: "",
     email: "",
     phone: "",
+    college: "",
+    currentYear: currentYears[0],
+    github: "",
+    linkedin: "",
+    experienceLevel: experienceLevels[0],
     track: "Frontend Development",
     message: "",
     resume: null, // File object, not a string
@@ -187,6 +280,7 @@ export default function InternshipPage() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const [errors, setErrors] = useState({});
+  const [openFaq, setOpenFaq] = useState(0);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -212,15 +306,27 @@ export default function InternshipPage() {
   const validate = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9+\-\s()]{7,15}$/;
+    const urlRegex = /^https?:\/\/.+\..+/i;
     const newErrors = {};
 
     if (!form.name.trim()) newErrors.name = "Name is required.";
+
     if (!form.email.trim()) newErrors.email = "Email is required.";
     else if (!emailRegex.test(form.email.trim()))
       newErrors.email = "Enter a valid email address.";
-    if (!form.phone.trim()) newErrors.phone = "Phone number is required.";
-    else if (!phoneRegex.test(form.phone.trim()))
+
+    // Phone is optional, but if provided it must be a valid format.
+    if (form.phone.trim() && !phoneRegex.test(form.phone.trim()))
       newErrors.phone = "Enter a valid phone number.";
+
+    if (!form.college.trim()) newErrors.college = "College name is required.";
+
+    if (form.github.trim() && !urlRegex.test(form.github.trim()))
+      newErrors.github = "Enter a valid GitHub URL.";
+
+    if (form.linkedin.trim() && !urlRegex.test(form.linkedin.trim()))
+      newErrors.linkedin = "Enter a valid LinkedIn URL.";
+
     if (!form.message.trim()) newErrors.message = "Please tell us a bit about yourself.";
     if (!form.resume) newErrors.resume = "Resume (PDF) is required.";
 
@@ -242,6 +348,11 @@ export default function InternshipPage() {
       body.append("name", form.name.trim());
       body.append("email", form.email.trim());
       body.append("phone", form.phone.trim());
+      body.append("college", form.college.trim());
+      body.append("currentYear", form.currentYear);
+      body.append("github", form.github.trim());
+      body.append("linkedin", form.linkedin.trim());
+      body.append("experienceLevel", form.experienceLevel);
       body.append("track", form.track);
       body.append("message", form.message.trim());
       body.append("resume", form.resume);
@@ -267,7 +378,7 @@ export default function InternshipPage() {
       {/* ---------------- HERO (parallax) ---------------- */}
       <section
         ref={heroRef}
-        className="relative h-[100svh] min-h-[600px] w-full overflow-hidden"
+        className="relative h-[100svh] min-h-[640px] w-full overflow-hidden"
       >
         <motion.div className="absolute inset-0" style={{ y: heroImgY }}>
           <Image
@@ -321,11 +432,11 @@ export default function InternshipPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="text-[#E2E4E9]/85 max-w-2xl text-lg leading-relaxed mb-10"
+            className="text-[#E2E4E9]/85 max-w-2xl text-lg leading-relaxed mb-8"
           >
-            Get hands-on experience working on real full-stack products.
-            Frontend, backend, design or marketing — grow with real
-            responsibility, not busywork.
+            Build real-world projects with BuniyadTechz. Gain practical
+            experience by working on startup-style tasks with mentor
+            guidance.
           </motion.p>
 
           <motion.a
@@ -335,10 +446,21 @@ export default function InternshipPage() {
             transition={{ duration: 0.7, delay: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block bg-[#C94A6F] hover:bg-[#B13D5F] transition px-8 py-3.5 rounded-full font-medium text-white shadow-lg shadow-[#C94A6F]/30"
+            className="inline-block bg-[#C94A6F] hover:bg-[#B13D5F] transition-all duration-300 px-8 py-3.5 rounded-full font-medium text-white shadow-lg shadow-[#C94A6F]/30 hover:shadow-[0_0_28px_rgba(201,74,111,0.65)]"
           >
             Apply Now
           </motion.a>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 1 }}
+            className="flex flex-wrap items-center justify-center gap-2.5 mt-6"
+          >
+            <TrustBadge>100% Free Internship</TrustBadge>
+            <TrustBadge>Remote</TrustBadge>
+            <TrustBadge>Certificate Optional</TrustBadge>
+          </motion.div>
         </motion.div>
 
         <motion.div
@@ -359,7 +481,7 @@ export default function InternshipPage() {
 
       <main className="bg-[#12131C] text-[#E2E4E9] px-6 pt-20 pb-32 max-w-7xl mx-auto">
 
-        {/* ---------------- STATS ---------------- */}
+        {/* ---------------- HIGHLIGHTS ---------------- */}
         <motion.section
           variants={staggerContainer}
           initial="hidden"
@@ -367,16 +489,19 @@ export default function InternshipPage() {
           viewport={{ once: true, amount: 0.3 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-28"
         >
-          {stats.map((s) => (
+          {highlights.map((h) => (
             <motion.div
-              key={s.label}
+              key={h.title}
               variants={fadeUpItem}
               className="text-center bg-[#1C1D26] border border-white/10 rounded-2xl py-8 px-4"
             >
-              <div className="text-3xl md:text-4xl font-bold text-[#C94A6F] mb-2">
-                <AnimatedCounter value={s.value} suffix={s.suffix} />
+              <div className="w-11 h-11 mx-auto mb-4 rounded-full bg-[#C94A6F]/10 flex items-center justify-center">
+                <h.icon className="text-[#C94A6F]" size={20} />
               </div>
-              <p className="text-[#868996] text-sm">{s.label}</p>
+              <div className="text-2xl md:text-3xl font-bold text-white mb-1">
+                {h.title}
+              </div>
+              <p className="text-[#868996] text-sm">{h.desc}</p>
             </motion.div>
           ))}
         </motion.section>
@@ -441,6 +566,7 @@ export default function InternshipPage() {
                     src={t.img}
                     alt={t.title}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
@@ -470,6 +596,7 @@ export default function InternshipPage() {
               src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80"
               alt="Team working together"
               fill
+              loading="lazy"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#12131C] via-transparent to-transparent" />
@@ -510,7 +637,7 @@ export default function InternshipPage() {
           </div>
         </section>
 
-        {/* ---------------- GALLERY ---------------- */}
+        {/* ---------------- WHAT YOU'LL BUILD ---------------- */}
         <section className="mb-28">
           <motion.h2
             variants={fadeUp}
@@ -519,7 +646,7 @@ export default function InternshipPage() {
             viewport={{ once: true }}
             className="text-3xl font-bold text-center mb-12"
           >
-            Life at <span className="text-[#C94A6F]">Buniyad Techz</span>
+            What You'll <span className="text-[#C94A6F]">Build</span>
           </motion.h2>
 
           <motion.div
@@ -527,23 +654,26 @@ export default function InternshipPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+            className="grid grid-cols-2 lg:grid-cols-5 gap-4"
           >
-            {gallery.map((src, i) => (
+            {builds.map((b) => (
               <motion.div
-                key={src}
+                key={b.label}
                 variants={fadeUpItem}
                 whileHover={{ scale: 1.03 }}
-                className={`relative rounded-2xl overflow-hidden ${
-                  i === 0 || i === 3 ? "h-64" : "h-48 lg:h-64 lg:mt-8"
-                }`}
+                className="relative h-56 rounded-2xl overflow-hidden"
               >
                 <Image
-                  src={src}
-                  alt="Buniyad Techz workspace"
+                  src={b.img}
+                  alt={b.label}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-500 hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                <span className="absolute bottom-3 left-3 right-3 text-sm font-medium text-white">
+                  {b.label}
+                </span>
               </motion.div>
             ))}
           </motion.div>
@@ -587,8 +717,48 @@ export default function InternshipPage() {
           </motion.div>
         </section>
 
+        {/* ---------------- FAQ ---------------- */}
+        <section className="mb-28">
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center mb-4"
+          >
+            Frequently Asked <span className="text-[#C94A6F]">Questions</span>
+          </motion.h2>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="text-[#868996] text-center max-w-xl mx-auto mb-12"
+          >
+            Everything you need to know before applying.
+          </motion.p>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+            className="max-w-3xl mx-auto space-y-4"
+          >
+            {faqs.map((item, i) => (
+              <motion.div key={item.q} variants={fadeUpItem}>
+                <FaqItem
+                  item={item}
+                  isOpen={openFaq === i}
+                  onToggle={() => setOpenFaq(openFaq === i ? -1 : i)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+
         {/* ---------------- APPLICATION FORM ---------------- */}
-        <section id="apply" className="grid md:grid-cols-2 gap-16 items-start mb-28 scroll-mt-24">
+        <section id="apply" className="grid md:grid-cols-2 gap-16 items-start mb-16 scroll-mt-24">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -609,7 +779,7 @@ export default function InternshipPage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="space-y-4 text-[#E2E4E9]/85 text-sm"
+              className="space-y-4 text-[#E2E4E9]/85 text-sm mb-10"
             >
               {[
                 "Open to students and freshers",
@@ -622,6 +792,30 @@ export default function InternshipPage() {
                 </motion.div>
               ))}
             </motion.div>
+
+            {/* Trust box */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="rounded-2xl border border-[#3CD070]/25 bg-[#3CD070]/[0.06] p-6"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck className="text-[#3CD070]" size={20} />
+                <h3 className="font-semibold text-[#E2E4E9]">
+                  Why Students Trust BuniyadTechz
+                </h3>
+              </div>
+              <ul className="space-y-2.5">
+                {trustPoints.map((point) => (
+                  <li key={point} className="flex items-center gap-2.5 text-sm text-[#E2E4E9]/85">
+                    <CheckCircle2 className="text-[#3CD070] shrink-0" size={16} />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -629,7 +823,7 @@ export default function InternshipPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="bg-[#1C1D26] border border-white/10 rounded-2xl p-10 shadow-lg"
+            className="bg-[#1C1D26] border border-white/10 rounded-2xl p-10 shadow-lg relative"
           >
             <h3 className="text-2xl font-semibold mb-6">
               Application Form
@@ -674,12 +868,11 @@ export default function InternshipPage() {
 
               <div>
                 <label className="block text-sm mb-2 text-[#E2E4E9]/85">
-                  Phone Number <span className="text-red-400">*</span>
+                  Phone Number <span className="text-[#868996]">(optional)</span>
                 </label>
                 <input
                   type="tel"
                   name="phone"
-                  required
                   value={form.phone}
                   onChange={handleChange}
                   placeholder="Enter your phone number"
@@ -688,6 +881,81 @@ export default function InternshipPage() {
                   }`}
                 />
                 {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-2 text-[#E2E4E9]/85">
+                    College Name <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="college"
+                    required
+                    value={form.college}
+                    onChange={handleChange}
+                    placeholder="Your college / university"
+                    className={`w-full bg-black/40 border rounded-lg px-4 py-3 text-white outline-none transition ${
+                      errors.college ? "border-red-400" : "border-white/10 focus:border-[#C94A6F]"
+                    }`}
+                  />
+                  {errors.college && <p className="text-red-400 text-xs mt-1">{errors.college}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm mb-2 text-[#E2E4E9]/85">
+                    Current Year <span className="text-red-400">*</span>
+                  </label>
+                  <select
+                    name="currentYear"
+                    required
+                    value={form.currentYear}
+                    onChange={handleChange}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#C94A6F] transition"
+                  >
+                    {currentYears.map((y) => (
+                      <option key={y} value={y} className="bg-neutral-900">
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="flex items-center gap-1.5 text-sm mb-2 text-[#E2E4E9]/85">
+                    <Github size={14} /> GitHub Profile <span className="text-[#868996]">(optional)</span>
+                  </label>
+                  <input
+                    type="url"
+                    name="github"
+                    value={form.github}
+                    onChange={handleChange}
+                    placeholder="https://github.com/username"
+                    className={`w-full bg-black/40 border rounded-lg px-4 py-3 text-white outline-none transition ${
+                      errors.github ? "border-red-400" : "border-white/10 focus:border-[#C94A6F]"
+                    }`}
+                  />
+                  {errors.github && <p className="text-red-400 text-xs mt-1">{errors.github}</p>}
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-1.5 text-sm mb-2 text-[#E2E4E9]/85">
+                    <Linkedin size={14} /> LinkedIn Profile <span className="text-[#868996]">(optional)</span>
+                  </label>
+                  <input
+                    type="url"
+                    name="linkedin"
+                    value={form.linkedin}
+                    onChange={handleChange}
+                    placeholder="https://linkedin.com/in/username"
+                    className={`w-full bg-black/40 border rounded-lg px-4 py-3 text-white outline-none transition ${
+                      errors.linkedin ? "border-red-400" : "border-white/10 focus:border-[#C94A6F]"
+                    }`}
+                  />
+                  {errors.linkedin && <p className="text-red-400 text-xs mt-1">{errors.linkedin}</p>}
+                </div>
               </div>
 
               <div>
@@ -708,23 +976,44 @@ export default function InternshipPage() {
                 {errors.resume && <p className="text-red-400 text-xs mt-1">{errors.resume}</p>}
               </div>
 
-              <div>
-                <label className="block text-sm mb-2 text-[#E2E4E9]/85">
-                  Preferred Track <span className="text-red-400">*</span>
-                </label>
-                <select
-                  name="track"
-                  required
-                  value={form.track}
-                  onChange={handleChange}
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#C94A6F] transition"
-                >
-                  {tracks.map((t) => (
-                    <option key={t.title} value={t.title} className="bg-neutral-900">
-                      {t.title}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-2 text-[#E2E4E9]/85">
+                    Preferred Track <span className="text-red-400">*</span>
+                  </label>
+                  <select
+                    name="track"
+                    required
+                    value={form.track}
+                    onChange={handleChange}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#C94A6F] transition"
+                  >
+                    {tracks.map((t) => (
+                      <option key={t.title} value={t.title} className="bg-neutral-900">
+                        {t.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm mb-2 text-[#E2E4E9]/85">
+                    Experience Level <span className="text-red-400">*</span>
+                  </label>
+                  <select
+                    name="experienceLevel"
+                    required
+                    value={form.experienceLevel}
+                    onChange={handleChange}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#C94A6F] transition"
+                  >
+                    {experienceLevels.map((lvl) => (
+                      <option key={lvl} value={lvl} className="bg-neutral-900">
+                        {lvl}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div>
@@ -750,23 +1039,13 @@ export default function InternshipPage() {
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full bg-[#C94A6F] hover:bg-[#B13D5F] disabled:opacity-60 transition py-3 rounded-full font-medium flex items-center justify-center gap-2 cursor-pointer "
+                className="w-full bg-[#C94A6F] hover:bg-[#B13D5F] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 py-3 rounded-full font-medium flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#C94A6F]/20 hover:shadow-[0_0_25px_rgba(201,74,111,0.55)]"
               >
                 {status === "loading" && <Loader2 className="animate-spin" size={18} />}
                 {status === "loading" ? "Submitting..." : "Submit Application"}
               </motion.button>
 
               <AnimatePresence mode="wait">
-                {status === "success" && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-[#3CD070] text-sm text-center"
-                  >
-                    Application submitted! We'll get back to you over email.
-                  </motion.p>
-                )}
                 {status === "error" && Object.keys(errors).length === 0 && (
                   <motion.p
                     initial={{ opacity: 0, y: -8 }}
@@ -789,6 +1068,61 @@ export default function InternshipPage() {
                 )}
               </AnimatePresence>
             </form>
+
+            {/* Premium success overlay */}
+            <AnimatePresence>
+              {status === "success" && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-20 flex items-center justify-center bg-[#12131C]/95 backdrop-blur-sm rounded-2xl p-8"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="w-full max-w-sm text-center bg-[#1C1D26] border border-[#3CD070]/30 rounded-2xl p-8 relative"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setStatus("idle")}
+                      aria-label="Close"
+                      className="absolute top-4 right-4 text-[#868996] hover:text-white transition cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.15, type: "spring", stiffness: 200, damping: 14 }}
+                      className="w-16 h-16 mx-auto mb-5 rounded-full bg-[#3CD070]/10 flex items-center justify-center"
+                    >
+                      <CheckCircle2 className="text-[#3CD070]" size={34} />
+                    </motion.div>
+
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      Application Submitted Successfully!
+                    </h3>
+                    <p className="text-[#868996] text-sm leading-relaxed mb-6">
+                      Thank you for applying. Our team will review your
+                      application and contact shortlisted candidates via
+                      email.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => setStatus("idle")}
+                      className="inline-block bg-[#C94A6F] hover:bg-[#B13D5F] transition px-6 py-2.5 rounded-full font-medium text-white text-sm cursor-pointer"
+                    >
+                      Done
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </section>
 
@@ -805,6 +1139,7 @@ export default function InternshipPage() {
               src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=1600&q=80"
               alt="Workspace"
               fill
+              loading="lazy"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-[#12131C]/90" />
@@ -818,7 +1153,7 @@ export default function InternshipPage() {
             </p>
             <a
               href="/contact"
-              className="inline-block bg-[#C94A6F] hover:bg-[#B13D5F] transition px-8 py-3 rounded-full font-medium"
+              className="inline-block bg-[#C94A6F] hover:bg-[#B13D5F] transition-all duration-300 px-8 py-3 rounded-full font-medium hover:shadow-[0_0_25px_rgba(201,74,111,0.55)]"
             >
               Contact Us
             </a>
